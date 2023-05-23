@@ -1,0 +1,27 @@
+# music_player.py
+import os
+import pygame
+from tkinter import Tk, filedialog
+
+class MusicPlayer:
+    def __init__(self):
+        pygame.init()
+        self.screen = Tk()
+        self.screen.withdraw()
+        self.music_directory = filedialog.askdirectory(initialdir=os.getcwd(), title="Select Music Directory")
+        self.music_files = self.get_music_files()
+        self.current_index = 0
+
+    def get_music_files(self):
+        music_files = []
+        for file in os.listdir(self.music_directory):
+            if file.endswith(".mp3"):
+                music_files.append(os.path.join(self.music_directory, file))
+        return music_files
+
+    def play(self):
+        pygame.mixer.init()
+        pygame.mixer.music.load(self.music_files[self.current_index])
+        pygame.mixer.music.play()
+
+    def pause(self):
